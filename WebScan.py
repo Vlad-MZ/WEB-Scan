@@ -9,9 +9,6 @@ import os
 import sys
 import urllib.request
 import urllib.error
-#from urllib.request import Request, urlopen
-#from urllib.error import URLError, HTTPError
-#import requests
 import re
 import argparse
 import colorama
@@ -21,7 +18,6 @@ _version_ = "1.0"
 
 # Colors.
 #   The only ANSI sequences that Colorama converts into win32 calls are:
-#   https://pypi.org/project/colorama/
 color = {
     # Fore (FOREGROUND):
     "FG_black":     "\033[30m",
@@ -48,8 +44,6 @@ color = {
     "bright":       "\033[;1m",     # bright
     "dim":          "\033[;2m",     # dim (looks same as normal brightness)
     "normal_brightness":"\033[;22m",# normal brightness
-#    "underline":"\033[;4m",
-#    "reverse": "\033[;7m",
 }
 
 
@@ -111,10 +105,9 @@ def scanWeb(url_path, dictionary_file):
                 r.add_unredirected_header('User-Agent',
                                           'Mozilla/5.0 (Windows; U; Windows NT 6.0;en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6')
                 r.add_unredirected_header('Referer', 'http://www.google.com/')
-                req = urllib.request.urlopen(r)
                 with urllib.request.urlopen(r) as response:
                     the_page = response.read()
-                    if req.getcode() == 200:
+                    if response.getcode() == 200:
                         print(color['FG_red'] + color['bright'] + "[!] Found {}".format(connection_url) + color['reset_all'])
                         rela.append(connection_url + "   " + str(len(the_page)))
                     else:
@@ -175,8 +168,6 @@ if __name__ == "__main__":
                         type=str, help='url path')
     parser.add_argument('-d', '--dict',  dest='dictionary', required=False,
                         type=str, help="path for dictionary file")
-    # parser.add_argument('-h', '--help',  dest='help', required=False,
-    #                     type=str, help="WebScan -u <url-path> -d <dictionary-file>")
     args = parser.parse_args()
 
     url_path = args.url_path
